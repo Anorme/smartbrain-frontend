@@ -75,39 +75,33 @@ class App extends Component {
 
   onPictureSubmit = () => {
   this.setState({imageUrl: this.state.input});
-
-  fetch('http://localhost:3000/imageurl', {
-    method: 'post',
-    headers: {'Content-Type' : 'application/json'},
-    body: JSON.stringify({
-      input: this.state.input
-    })
-  })  
-  .then(response => response.json())
-  .then(result => {
-    if (result) {
-      fetch('http://localhost:3000/image', {
-        method: 'put',
-        headers: {'Content-Type' : 'application/json'},
-        body: JSON.stringify({
-        id: this.state.user.id
-        })
+    fetch('http://localhost:3000/imageurl', {
+      method: 'post',
+      headers: {'Content-Type' : 'application/json'},
+      body: JSON.stringify({
+        input: this.state.input
       })
-      .then(response => response.json())
-      .then(count => {
-          this.setState(Object.assign(this.state.user, {entries: count}))
-        }
-      )
-      .catch(console.log)
-    }
-    this.displayFaceBox(this.calculateFaceLocation(result))
-  })
-  .then(count => {
-    this.setState({user: {
-      entries: this.state.user.entries
-    }})
-  })
-  .catch(error => console.log('error', error));
+    })  
+    .then(response => response.json())
+    .then(response => {
+      if (response) {
+        fetch('http://localhost:3000/image', {
+          method: 'put',
+          headers: {'Content-Type' : 'application/json'},
+          body: JSON.stringify({
+          id: this.state.user.id
+          })
+        })
+        .then(response => response.json())
+        .then(count => {
+            this.setState(Object.assign(this.state.user, {entries: count}))
+          })
+        .catch(console.log)
+        
+      }
+      this.displayFaceBox(this.calculateFaceLocation(response))
+    })
+    .catch(error => console.log('error', error));
   }
 
   onRouteChange = (route) => {
@@ -139,7 +133,7 @@ class App extends Component {
           </div>
         : (
             this.state.route === 'signin'
-            ?<SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
+            ?<SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
             :<Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
           )
       }
