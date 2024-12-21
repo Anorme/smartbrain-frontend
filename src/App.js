@@ -10,8 +10,6 @@ import ParticlesBg from 'particles-bg';
 import 'tachyons';
 import './App.css';
 
-// const test = "https://i.pinimg.com/originals/de/97/55/de975595890f0ed79238dc4d61532777.jpg"
-
 const initialState = {
   input: '',
   imageUrl:'',
