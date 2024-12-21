@@ -97,7 +97,7 @@ class App extends Component {
             this.setState(Object.assign(this.state.user, {entries: count}))
           })
         .catch(console.log)
-        
+
       }
       this.displayFaceBox(this.calculateFaceLocation(response))
     })
@@ -117,7 +117,6 @@ class App extends Component {
     return (
       <div className="App">
         <>
-          <div>...</div>
           <ParticlesBg className="particles" color="#ffffff" type="cobweb" bg={true} num={100} />
         </>
       <Navigation isSignedIn ={this.state.isSignedIn} onRouteChange={this.onRouteChange}/>
