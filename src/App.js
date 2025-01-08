@@ -22,8 +22,7 @@ const initialState = {
     name: '',
     entries: 0,
     joined: ''
-  },
-  mousePosition: { x:0, y: 0}
+  }
 }
 
 class App extends Component {
@@ -116,35 +115,13 @@ class App extends Component {
     }
     this.setState({route: route});
   }
-
-  handleMouseMove = (event) => {
-    this.setState({
-      mousePosition: { x: event.clientX, y: event.clientY}
-    });
-  }
   
   render() {
     const { isSignedIn, imageUrl, route, boxes} = this.state;
-    const config = {
-      type: 'cobweb',
-      num: 70,
-      color: ["#ffffff"],
-      onParticleUpdate: (ctx, particle) => {
-        const dx = this.state.mousePosition.x - particle.p.x  ;
-        const dy = this.state.mousePosition.yy - particle.p.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < 50) {
-          particle.p.x += dx * 0.05;
-          particle.p.y += dy * 0.05
-        }
-      }
-    }
-
     return (
-      <div className="App" onMouseMove={this.handleMouseMove}>
+      <div className="App">
         <>
-          <ParticlesBg className="particles" config={config} />
+          <ParticlesBg className="particles" color="#ffffff" type="cobweb" bg={true} num={100} />
         </>
       <Navigation isSignedIn ={isSignedIn} onRouteChange={this.onRouteChange}/>
       {route === 'home'
