@@ -131,7 +131,7 @@ class App extends Component {
       color: ["#ffffff"],
       onParticleUpdate: (ctx, particle) => {
         const dx = this.state.mousePosition.x - particle.p.x  ;
-        const dy = this.state.mousePosition.y - particle.p.y;
+        const dy = this.state.mousePosition.yy - particle.p.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < 50) {
