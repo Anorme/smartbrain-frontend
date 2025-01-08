@@ -13,7 +13,7 @@ import './App.css';
 const initialState = {
   input: '',
   imageUrl:'',
-  box: {},
+  boxes: [],
   route: 'signin',
   isSignedIn: false,
   user: {
@@ -46,25 +46,30 @@ class App extends Component {
     const width = Number(image.width);
     const height = Number(image.height);
 
-    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
-    // Accessing and rounding the bounding box values
-    const topRow = clarifaiFace.top_row.toFixed(3);
-    const leftCol = clarifaiFace.left_col.toFixed(3);
-    const bottomRow = clarifaiFace.bottom_row.toFixed(3);
-    const rightCol = clarifaiFace.right_col.toFixed(3);
+    const dataArray = data.outputs[0].data.regions;
+    const clarifaiFaces = dataArray.map((face) => {
+      const clarifaiFace = face.region_info.bounding_box;
+      // Accessing and rounding the bounding box values
+      const topRow = clarifaiFace.top_row.toFixed(3);
+      const leftCol = clarifaiFace.left_col.toFixed(3);
+      const bottomRow = clarifaiFace.bottom_row.toFixed(3);
+      const rightCol = clarifaiFace.right_col.toFixed(3);
 
-    //Calculating the face box position 
-    return {
-      leftCol: leftCol * width,
-      topRow: topRow * height,
-      rightCol: width - (rightCol * width),
-      bottomRow: height - (bottomRow * height)
-    }
+      //Calculating the face box position 
+      return {
+        leftCol: leftCol * width,
+        topRow: topRow * height,
+        rightCol: width - (rightCol * width),
+        bottomRow: height - (bottomRow * height)
+      }
+    });
+
+    return clarifaiFaces;    
   }
 
-  displayFaceBox = (box) => {
-    console.log(box);
-    this.setState({box: box});
+  displayFaceBox = (boxes) => {
+    console.log(boxes);
+    this.setState({boxes: boxes});
   }
 
   onInputChange = (event) => {
@@ -126,7 +131,7 @@ class App extends Component {
               onInputChange={this.onInputChange} 
               onButtonSubmit={this.onPictureSubmit}
             />
-            <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl}/>
+            <FaceRecognition boxes={this.state.boxes} imageUrl={this.state.imageUrl}/>
           </div>
         : (
             this.state.route === 'signin'
